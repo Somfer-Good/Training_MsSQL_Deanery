@@ -1,12 +1,12 @@
 use [2022_PMI_2]
 Create Table Specialty(
 	SpecId int not null identity(1,1) primary key,
-	Name nvarchar(200) not null,
+	Title nvarchar(200) not null,
 )
 
 Create Table [Group](
 	GroupId int not null identity(1,1) primary key,
-	Name nvarchar(200) not null,
+	Title nvarchar(200) not null,
 	SpecId int not null foreign key references Specialty, 
 )
 
@@ -24,7 +24,7 @@ Create Table Professor(
 
 Create Table Discipline(
 	DisciplineId int not null identity(1,1) primary key,
-	Name nvarchar(200) not null,
+	Title nvarchar(200) not null,
 )
 
 Create Table [Lead](
