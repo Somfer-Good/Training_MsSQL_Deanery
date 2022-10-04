@@ -38,7 +38,7 @@ Create Table StudyPlan(
 	PlanId int not null identity(1,1) primary key,
 	TypeReporting nvarchar(7) not null,
 	AmountHours int not null,
-	Term int not null,
+	Semester  int not null,
 	ProfessorId int not null foreign key references Professor,
 	DisciplineId int not null foreign key references Discipline,
 	GroupId int not null foreign key references [Group],

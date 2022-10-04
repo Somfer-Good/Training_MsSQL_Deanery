@@ -36,5 +36,32 @@ values (N'Бережной Евгений Иванович',N'Дифференциальные уравнения'),
 (N'Ухалов Алексей Юрьевич',N'Математический анализ'),
 (N'Кащенко Александра Андреевна',N'Математический анализ')
 
+Insert into [dbo].[Discipline] ([Title])
+values (N'Математический анализ'), (N'Дифференцальные уравнения'), (N'Базы данных'), (N'Основы программирования'), (N'Теория устойчивости'), 
+(N'Методы копьютерного исследования динамических систем'),(N'Теория вероятности и математическая статистика'),(N'Концепции современного естествознания'),(N'Основы информатики'), (N'Операционные системы'),
+(N'Дискретная математика'),(N'Алгебра и геометрия'),(N'Компрексный анализ')
 
+Insert into [dbo].[Lead]([DisciplineId],[ProfessorId])
+values (1,13),(1,11),(1,14),(2,2),(3,7),(3,9),(4,7),(4,9),(5,2),(6,3),(7,1),(7,12),(8,4),(9,3),(10,5),(11,9),(11,8),(12,10),(13,13),(13,14)
 
+Insert into [dbo].[StudyPlan]([TypeReporting],[AmountHours],[Semester],[ProfessorId],[DisciplineId],[GroupId])
+values (N'Экзамен',144,1,11,1,8),(N'Зачет',144,2,5,10,8)
+
+Insert into [dbo].[Report]([StudentId],[PlanId],[Reporting])
+values (18,1,'4'),(18,2,N'Зачет')
+
+Select * from [dbo].[Specialty]
+
+Select * from [dbo].[Group]
+
+Select * from [dbo].[Student]
+
+Select * from [dbo].[Professor]
+
+Select * from [dbo].[Discipline]
+
+Select * from [dbo].[Lead]
+
+Select * from [dbo].[StudyPlan]
+
+Select * from [dbo].[Report]

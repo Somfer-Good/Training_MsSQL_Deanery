@@ -1,4 +1,5 @@
 use [2022_PMI_2]
+
 DROP TABLE [dbo].[Lead]
 DROP TABLE [dbo].[Report]
 DROP TABLE [dbo].[Student]
