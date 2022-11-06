@@ -9,5 +9,5 @@ DROP TABLE [dbo].[Group]
 DROP TABLE [dbo].[Professor]
 DROP TABLE [dbo].[Specialty]
 
-use [master]
+use master
 DROP DATABASE [2022_PMI_2]

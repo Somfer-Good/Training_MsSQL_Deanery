@@ -1,3 +1,5 @@
+CREATE DATABASE [2022_PMI_2]
+
 use [2022_PMI_2]
 Create Table Specialty(
 	SpecId int not null identity(1,1) primary key,
