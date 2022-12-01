@@ -3,11 +3,11 @@ use [2022_PMI_2]
 --1.1
 select *
 from Student
-order by Name
+order by GroupId,Name 
 
 select *
 from Student
-order by Name desc
+order by GroupId,Name desc
 
 --1.2
 
@@ -29,15 +29,29 @@ from Student
 where GroupId=8
 
 --1.4
+select Cathedra, COUNT(ProfessorId)
+from Professor
+GROUP by Cathedra
+
+select GroupId, count(StudentId)
+from Student
+group by
+rollup(GroupId)
+
+select GroupId, count(StudentId)
+from Student
+group by
+cube(GroupId)
+
 
 --1.5
 Select * 
 from [Group]
-where [Title] LIKE N'ПМИ%'
+where [Title] not LIKE N'ПМИ%'
 
 Select * 
 from [Group]
-where [Title] LIKE N'%2%'
+where [Title] not LIKE N'%Б%'
 
 --2.1
 select s.Name, g.Title
@@ -62,6 +76,7 @@ select g.Title, count(s.StudentId)
 from [Group] g left join Student s
 on g.GroupId=s.GroupId
 GROUP by g.Title,g.GroupId
+order by count(s.StudentId)
 
 --2.4/2.5
 select s.Title, COUNT(g.GroupId)
@@ -70,11 +85,11 @@ on g.SpecId=s.SpecId
 GROUP by s.SpecId,s.Title
 
 --2.6
-select s.Name, COUNT(r.PlanId)
-from Report r JOIN Student s
-on r.StudentId=s.StudentId
-GROUP by s.Name
-HAVING s.Name=N'Фурманец Сергей'
+select g.Title, count(s.StudentId)
+from [Group] g JOIN Student s
+on s.GroupId=g.GroupId
+group by g.Title,g.GroupId
+HAVING count(s.StudentId)>20
 
 --2.7
 select *
@@ -86,31 +101,29 @@ from [Group]
 where exists
 (select * 
 from Student
-WHERE Student.GroupId=[Group].GroupId
-)
+WHERE Student.GroupId=[Group].GroupId)
 
 --3.1
 CREATE VIEW v
-AS SELECT StudentId, [Name] 
-FROM Student;
+AS SELECT s.Name, g.Title as [Group], sp.Title as Specialty
+from Student s join [Group] g 
+on s.GroupId=g.GroupId
+join Specialty sp on sp.SpecId=g.SpecId
 
 select * from v
 
-CREATE VIEW v1
-AS SELECT GroupId, Title 
-FROM [Group];
-
-select * from v1
-
 --3.2
-
 WITH gr AS
-    (select Title as t from [Group]) 
+    (SELECT s.Name, g.Title as [Group], sp.Title as Specialty
+from Student s join [Group] g 
+on s.GroupId=g.GroupId
+join Specialty sp on sp.SpecId=g.SpecId) 
 select * from gr
 
---4.1
 
-select row_number() over(ORDER BY Title) num,*
+
+--4.1
+select row_number() over(PARTITION by Title ORDER BY Title) num,*
 from Specialty 
 
 SELECT *, RANK() OVER(ORDER BY s.Title) rnk
@@ -122,11 +135,24 @@ from  Specialty s JOIN [Group] g
 on g.SpecId=s.SpecId
 
 --5.1
+select Title from [Group]
+union
+select Title from Specialty
 
---UNION удаляет повторяющиеся строки
---UNION ALL не удаляет повторяющиеся строки
---EXCEPT которые входят в первый и не входят во второй набор
---INTERSECT только совпадающие наборы
+select Title from [Group]
+union all
+select Title from Specialty
+
+select Title from [Group]
+EXCEPT
+select Title from [Group]
+where SpecId>1
+order by Title
+
+select Title from [Group]
+INTERSECT
+select Title from [Group]
+where SpecId>1
 
 --6.1
 select Title,case Title
@@ -136,6 +162,23 @@ select Title,case Title
     WHEN N'Компьютерная безопасность' then N'КБ'
 end as 'Сокращение'
 from Specialty
+
+select * from Professor
+
+select *
+from Professor
+PIVOT(count(ProfessorId) for Cathedra in ([Дифференциальные уравнения],
+[Компьютерной безопасности и математических методов обработки информации],[Математический анализ])) pvt
+
+select Name, Cathedra
+from Professor
+PIVOT(count(ProfessorId) for Cathedra in ([Дифференциальные уравнения],
+[Компьютерной безопасности и математических методов обработки информации],[Математический анализ])) pvt
+unpivot(
+   ProfessorId for Cathedra in ([Дифференциальные уравнения],
+[Компьютерной безопасности и математических методов обработки информации],[Математический анализ])
+)unpvt
+where ProfessorId=1
 
 
 --a
